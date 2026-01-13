@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================
+         ACCIÓN DEL MODELO (abre las vistas del modelo comic)
+         ====================================================== -->
+    <record id="biblioteca_comic_action" model="ir.actions.act_window">
+        <!-- Título que se mostrará al usuario -->
+        <field name="name">Biblioteca de Cómics</field>
+
+        <!-- Modelo que se abre -->
+        <field name="res_model">biblioteca.comic</field>
+
+        <!-- Modos de vista que se usarán por defecto -->
+        <field name="view_mode">list,kanban,form</field>
+    </record>
+
+    <!-- ======================================================
+         MENÚS DEL MÓDULO
+         ====================================================== -->
+
+    <!-- Menú principal -->
+    <menuitem name="Mi biblioteca" id="biblioteca_base_menu" />
+
+    <!-- Menú hijo con acción asociada -->
+    <menuitem name="Cómics"
+              id="biblioteca_comic_menu"
+              parent="biblioteca_base_menu"
+              action="biblioteca_comic_action" />
+
+    <!-- ======================================================
+         VISTA FORMULARIO (para ver y editar un cómic)
+         ====================================================== -->
+    <record id="biblioteca_comic_view_form" model="ir.ui.view">
+        <field name="name">Formulario Comic Biblioteca</field>
+        <field name="model">biblioteca.comic</field>
+        <field name="arch" type="xml">
+            <form>
+                <!-- Botón en el encabezado del formulario -->
+                <header>
+                    <button type="object" name="archivar" string="Archivar Cómic"/>
+                </header>
+
+                <!-- Grupo principal con dos columnas -->
+                <group>
+                    <group>
+                        <field name="nombre"/>
+                        <field name="autor_ids" widget="many2many_tags"/>
+                        <field name="estado"/>
+                        <field name="paginas"/>
+                        <field name="categoria_id"/>
+                        <field name="activo" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="editorial_id"/>
+                        <field name="precio"/>
+                        <field name="fecha_publicacion"/>
+                        <field name="dias_lanzamiento"/>
+                        <field name="portada" widget="image" class="oe_avatar"/>
+                        <field name="valoracion_lector"/>
+                        <field name="ref_doc_id"/>
+                    </group>
+                </group>
+
+                <!-- Descripción del cómic -->
+                <group>
+                    <field name="descripcion"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- ======================================================
+         VISTA LISTA (antes se llamaba erróneamente 'tree')
+         ====================================================== -->
+    <record id="biblioteca_comic_view_tree" model="ir.ui.view">
+        <field name="name">Lista de Comics de la biblioteca</field>
+        <field name="model">biblioteca.comic</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="nombre"/>
+                <field name="fecha_publicacion"/>
+                <field name="estado"/>
+                <field name="categoria_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ======================================================
+         VISTA DE BÚSQUEDA (filtros y campos de búsqueda rápida)
+         ====================================================== -->
+    <record id="biblioteca_comic_view_search" model="ir.ui.view">
+        <field name="name">Búsqueda Comics Biblioteca</field>
+        <field name="model">biblioteca.comic</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="nombre"/>
+                <field name="autor_ids"/>
+                <!-- Filtro personalizado -->
+                <filter string="Sin autor"
+                        name="sin_autor"
+                        domain="[('autor_ids','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ======================================================
+         VISTA KANBAN (tarjetas visuales agrupadas por categoría)
+         ====================================================== -->
+    <record id="biblioteca_comic_view_kanban" model="ir.ui.view">
+        <field name="name">Kanban Comics Biblioteca</field>
+        <field name="model">biblioteca.comic</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="categoria_id">
+                <!-- Campos que estarán disponibles en la tarjeta -->
+                <field name="nombre"/>
+                <field name="id"/>
+                <field name="portada"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <!-- Tarjeta del cómic -->
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <!-- Título del cómic -->
+                            <field name="nombre"/>
+                        </div>
+
+                        <!-- Imagen del cómic -->
+                        <div class="o_kanban_image_inner_pic">
+                            <img alt="Portada"
+                                 t-att-src="kanban_image('biblioteca.comic', 'portada', record.id.raw_value)"
+                                 style="width:30mm; height:30mm;" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Acción para Socios -->
+    <record model="ir.actions.act_window" id="action_biblioteca_socios">
+      <field name="name">Socios</field>
+      <field name="res_model">biblioteca.socio</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Acción para Ejemplares -->
+    <record model="ir.actions.act_window" id="action_biblioteca_ejemplares">
+      <field name="name">Ejemplares y Préstamos</field>
+      <field name="res_model">biblioteca.comic.ejemplar</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menús -->
+    <menuitem id="menu_biblioteca_gestion" name="Gestión" parent="biblioteca_base_menu" sequence="20"/>
+
+    <menuitem id="menu_biblioteca_socios" name="Socios"
+              parent="menu_biblioteca_gestion" action="action_biblioteca_socios" sequence="10"/>
+
+    <menuitem id="menu_biblioteca_ejemplares" name="Préstamos de Ejemplares"
+              parent="menu_biblioteca_gestion" action="action_biblioteca_ejemplares" sequence="20"/>
+
+    <!-- Vista Lista de Ejemplares -->
+    <record id="view_biblioteca_ejemplar_tree" model="ir.ui.view">
+      <field name="name">biblioteca.comic.ejemplar.tree</field>
+      <field name="model">biblioteca.comic.ejemplar</field>
+      <field name="arch" type="xml">
+        <tree string="Ejemplares">
+          <field name="codigo_ejemplar"/>
+          <field name="comic_id"/>
+          <field name="socio_id"/>
+          <field name="fecha_inicio_prestamo"/>
+          <field name="fecha_prevista_devolucion"/>
+        </tree>
+      </field>
+    </record>
+
+
+</odoo>

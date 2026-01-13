@@ -1,0 +1,57 @@
+<odoo>
+    <!-- Acciones -->
+    <record id="action_instituto_ciclos" model="ir.actions.act_window">
+        <field name="name">Ciclos Formativos</field>
+        <field name="res_model">instituto.ciclo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_instituto_modulos" model="ir.actions.act_window">
+        <field name="name">Módulos</field>
+        <field name="res_model">instituto.modulo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_instituto_alumnos" model="ir.actions.act_window">
+        <field name="name">Alumnos</field>
+        <field name="res_model">instituto.alumno</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_instituto_profesores" model="ir.actions.act_window">
+        <field name="name">Profesores</field>
+        <field name="res_model">instituto.profesor</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menús -->
+    <menuitem id="menu_instituto_root" name="Instituto" sequence="10"/>
+    <menuitem id="menu_instituto_principal" name="Gestión Académica" parent="menu_instituto_root" sequence="10"/>
+
+    <menuitem id="menu_ciclos" name="Ciclos" parent="menu_instituto_principal" action="action_instituto_ciclos"/>
+    <menuitem id="menu_modulos" name="Módulos" parent="menu_instituto_principal" action="action_instituto_modulos"/>
+    <menuitem id="menu_alumnos" name="Alumnos" parent="menu_instituto_principal" action="action_instituto_alumnos"/>
+    <menuitem id="menu_profesores" name="Profesores" parent="menu_instituto_principal" action="action_instituto_profesores"/>
+
+    <!-- Vista Formulario de Módulo (Especialmente importante por las relaciones) -->
+    <record id="view_instituto_modulo_form" model="ir.ui.view">
+        <field name="name">instituto.modulo.form</field>
+        <field name="model">instituto.modulo</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="ciclo_id"/>
+                        <field name="profesor_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Alumnos">
+                            <field name="alumno_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
