@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_liga_equipo_user,access.liga.equipo,model_liga_equipo,base.group_user,1,1,1,1
+access_liga_partido_user,access.liga.partido,model_liga_partido,base.group_user,1,1,1,1
+access_liga_equipo_wizard_user,access.liga.equipo.wizard,model_liga_equipo_wizard,base.group_user,1,1,1,1
+access_liga_partido_wizard_user,access.liga.partido.wizard,model_liga_partido_wizard,base.group_user,1,1,1,1

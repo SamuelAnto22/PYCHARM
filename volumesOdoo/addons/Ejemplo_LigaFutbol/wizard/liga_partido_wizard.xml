@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===============================================================
+         VISTA FORMULARIO DEL WIZARD
+         =============================================================== -->
+    <record id="liga_partido_wizard_form" model="ir.ui.view">
+        <field name="name">Wizard para crear un nuevo partido</field>
+        <field name="model">liga.partido.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Añadir nuevo partido">
+                <sheet>
+                    <group>
+                        <field name="equipo_casa"/>
+                        <field name="goles_casa"/>
+                    </group>
+                    <group>
+                        <field name="equipo_fuera"/>
+                        <field name="goles_fuera"/>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button string="Añadir partido"
+                            name="add_liga_partido"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancelar"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===============================================================
+         ACCIÓN DEL WIZARD
+         =============================================================== -->
+    <record id="action_wizard_liga_partido" model="ir.actions.act_window">
+        <field name="name">Añadir partido</field>
+        <field name="res_model">liga.partido.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ===============================================================
+         MENÚ PARA ABRIR EL WIZARD DESDE EL MENÚ PRINCIPAL
+         =============================================================== -->
+    <menuitem id="menu_wizard_liga_partido"
+              name="Añadir partido (Wizard)"
+              parent="liga_base_menu"
+              action="action_wizard_liga_partido"
+              sequence="50"/>
+</odoo>

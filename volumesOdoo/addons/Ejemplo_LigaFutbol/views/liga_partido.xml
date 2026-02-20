@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===============================================================
+         ACCIÓN: Abre las vistas de partidos desde el menú
+         =============================================================== -->
+    <record id="liga_partido_action" model="ir.actions.act_window">
+        <field name="name">Partidos de la liga</field>
+        <field name="res_model">liga.partido</field>
+        <field name="view_mode">kanban,list,form,graph</field>
+    </record>
+
+    <menuitem name="Partidos de la liga"
+              id="liga_partido_menu"
+              parent="liga_base_menu"
+              action="liga_partido_action"/>
+
+    <!-- ===============================================================
+         FORM VIEW
+         =============================================================== -->
+    <record id="liga_partido_view_form" model="ir.ui.view">
+        <field name="name">Formulario Partidos</field>
+        <field name="model">liga.partido</field>
+        <field name="arch" type="xml">
+            <form string="Registro de Partido">
+                <header>
+                    <button name="action_sumar_goles_casa"
+                            type="object"
+                            string="Sumar 2 goles a locales"
+                            class="oe_highlight"/>
+                    <button name="action_sumar_goles_fuera"
+                            type="object"
+                            string="Sumar 2 goles a visitantes"
+                            class="oe_highlight"/>
+                </header>
+                <group>
+                    <group>
+                        <field name="equipo_casa"/>
+                        <field name="goles_casa"/>
+                    </group>
+                    <group>
+                        <field name="equipo_fuera"/>
+                        <field name="goles_fuera"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===============================================================
+         LIST VIEW
+         =============================================================== -->
+    <record id="liga_partido_view_list" model="ir.ui.view">
+        <field name="name">Lista de partidos de la liga</field>
+        <field name="model">liga.partido</field>
+        <field name="arch" type="xml">
+            <tree string="Partidos jugados">
+                <header>
+                    <button name="action_sumar_goles_casa"
+                            type="object"
+                            string="Sumar 2 goles a locales"
+                            class="oe_highlight"/>
+                    <button name="action_sumar_goles_fuera"
+                            type="object"
+                            string="Sumar 2 goles a visitantes"
+                            class="oe_highlight"/>
+                </header>
+                <field name="equipo_casa"/>
+                <field name="goles_casa"/>
+                <field name="equipo_fuera"/>
+                <field name="goles_fuera"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ===============================================================
+         KANBAN VIEW (corregido para Odoo 19 / OWL)
+         =============================================================== -->
+    <record id="liga_partido_view_kanban" model="ir.ui.view">
+        <field name="name">Tarjetas de partidos de la liga</field>
+        <field name="model">liga.partido</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="equipo_casa"/>
+                <field name="goles_casa"/>
+                <field name="equipo_fuera"/>
+                <field name="goles_fuera"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_content text-center">
+                                <div class="oe_kanban_card" style="padding:10px;">
+                                    <p><b>⚽ Resultado del Partido ⚽</b></p>
+                                    <p>
+                                        <!-- USAMOS t-esc EN VEZ DE t-field -->
+                                        <t t-esc="record.equipo_casa.value"/> :
+                                        <t t-esc="record.goles_casa.value"/>
+                                        <strong> - </strong>
+                                        <t t-esc="record.goles_fuera.value"/> :
+                                        <t t-esc="record.equipo_fuera.value"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ===============================================================
+         GRAPH VIEW
+         =============================================================== -->
+    <record id="liga_partido_view_graph" model="ir.ui.view">
+        <field name="name">Gráfico de goles en casa</field>
+        <field name="model">liga.partido</field>
+        <field name="arch" type="xml">
+            <graph string="Goles en casa por partido" type="bar">
+                <field name="equipo_casa" type="row"/>
+                <field name="goles_casa" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+</odoo>

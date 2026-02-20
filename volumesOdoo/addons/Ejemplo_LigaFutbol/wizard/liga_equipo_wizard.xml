@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===============================================================
+         VISTA FORMULARIO DEL WIZARD
+         =============================================================== -->
+    <record id="liga_equipo_wizard_form" model="ir.ui.view">
+        <field name="name">Wizard para crear un nuevo equipo</field>
+        <field name="model">liga.equipo.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Añadir nuevo equipo a la liga">
+                <sheet>
+                    <group>
+                        <field name="nombre" placeholder="Ej: Real ChatGPT CF"/>
+                    </group>
+                    <group>
+                        <field name="descripcion" placeholder="Descripción, historia o información del club..."/>
+                    </group>
+                </sheet>
+
+                <!-- Botones del wizard -->
+                <footer>
+                    <!-- Al hacer clic, se ejecuta el método Python add_liga_equipo -->
+                    <button string="Añadir equipo"
+                            name="add_liga_equipo"
+                            type="object"
+                            class="btn-primary"/>
+                    <!-- Cierra el wizard sin hacer nada -->
+                    <button string="Cancelar"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===============================================================
+         ACCIÓN DEL WIZARD
+         =============================================================== -->
+    <record id="action_wizard_liga_equipo" model="ir.actions.act_window">
+        <field name="name">Añadir equipo</field>
+        <field name="res_model">liga.equipo.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <!-- target="new" indica que se abre en una ventana modal -->
+    </record>
+
+    <!-- ===============================================================
+         MENÚ PARA ABRIR EL WIZARD DESDE EL MENÚ PRINCIPAL
+         =============================================================== -->
+    <menuitem id="menu_wizard_liga_equipo"
+              name="Añadir equipo (Wizard)"
+              parent="liga_base_menu"
+              action="action_wizard_liga_equipo"
+              sequence="40"/>
+</odoo>

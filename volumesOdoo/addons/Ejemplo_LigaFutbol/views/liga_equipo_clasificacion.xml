@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===============================================================
+         LIST VIEW: Clasificación general
+         =============================================================== -->
+    <record id="liga_equipo_clasificacion_view_list" model="ir.ui.view">
+        <field name="name">Clasificación de equipos</field>
+        <field name="model">liga.equipo</field>
+        <field name="arch" type="xml">
+            <tree string="Clasificación de la liga" default_order="puntos desc">
+                <field name="escudo" widget="image" class="oe_avatar"/>
+                <field name="nombre"/>
+                <field name="puntos"/>
+                <field name="jugados"/>
+                <field name="victorias"/>
+                <field name="empates"/>
+                <field name="derrotas"/>
+                <field name="goles_a_favor"/>
+                <field name="goles_en_contra"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ===============================================================
+         SEARCH VIEW
+         =============================================================== -->
+    <record id="liga_equipo_clasificacion_view_search" model="ir.ui.view">
+        <field name="name">Búsqueda de Equipos en clasificación</field>
+        <field name="model">liga.equipo</field>
+        <field name="arch" type="xml">
+            <search string="Buscar equipo">
+                <field name="nombre"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ===============================================================
+         ACCIÓN Y MENÚ
+         =============================================================== -->
+    <record id="liga_equipo_clasificacion_action" model="ir.actions.act_window">
+        <field name="name">Clasificación de la liga</field>
+        <field name="res_model">liga.equipo</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="liga_equipo_clasificacion_view_list"/>
+    </record>
+
+    <menuitem name="Clasificación"
+              id="liga_equipo_clasificacion_menu"
+              parent="liga_base_menu"
+              action="liga_equipo_clasificacion_action"
+              sequence="30"/>
+
+</odoo>
